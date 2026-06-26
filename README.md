@@ -111,6 +111,55 @@ prueba_godot/
 └── project.godot
 ```
 
+---
+
+## Correr en otra PC (distribución por repositorio)
+
+Este proyecto se distribuye como repositorio git. No requiere instalador — un script
+de setup configura el entorno automáticamente.
+
+### Requisitos previos
+
+| Herramienta | Versión | Descarga |
+|-------------|---------|----------|
+| Godot       | 4.6     | https://godotengine.org |
+| Python      | 3.10+   | https://www.python.org  |
+| Git         | cualquiera | https://git-scm.com  |
+
+> Godot debe estar disponible en el PATH del sistema (o copiar `godot.exe` a la raíz del proyecto).
+
+### Pasos
+
+```bat
+:: 1. Clonar el repositorio
+git clone <url-del-repo>
+cd prueba_godot
+
+:: 2. Correr el setup (una sola vez)
+setup.bat
+
+:: 3. Lanzar
+godot --path .
+```
+
+`setup.bat` crea el entorno virtual `.venv` e instala todas las dependencias Python
+listadas en `requirements.txt`. Al terminar indica los pasos siguientes.
+
+### Primera vez en una PC nueva
+
+La calibración del semáforo es **específica de cada instalación** (depende de la
+posición de la cámara y el panel LED). Luego de correr `setup.bat`:
+
+1. Conectá la cámara USB apuntando al semáforo físico.
+2. Abrí el launcher con `godot --path .`.
+3. Presioná **"Calibrar semáforo"** y seguí los pasos (panel → dígitos).
+4. Presioná **"Iniciar simulador"**.
+
+Los archivos `config/roi.json` y `config/traffic_state.json` se generan localmente
+y **no se versionan** (están en `.gitignore`), por lo que cada PC tiene su propia calibración.
+
+---
+
 ## Scope actual
 
 - Av. Colón como avenida urbana de 4 carriles.
