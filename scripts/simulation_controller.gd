@@ -8,9 +8,8 @@ const PythonBridgeScript := preload("res://scripts/python_bridge.gd")
 var traffic_light: TrafficLightController
 var spawner: VehicleSpawner
 var camera_rig: CameraRig
-var bridge: PythonBridge
+var bridge  # PythonBridge
 var hud_label: Label
-var traffic_state := VehicleSpawner.LOW
 
 
 func _ready() -> void:
@@ -37,19 +36,7 @@ func _unhandled_input(event: InputEvent) -> void:
     if not key_event.pressed or key_event.echo:
         return
 
-    if key_event.keycode == KEY_1:
-        traffic_state = VehicleSpawner.LOW
-        spawner.set_traffic_state(traffic_state)
-    elif key_event.keycode == KEY_2:
-        traffic_state = VehicleSpawner.MEDIUM
-        spawner.set_traffic_state(traffic_state)
-    elif key_event.keycode == KEY_3:
-        traffic_state = VehicleSpawner.HIGH
-        spawner.set_traffic_state(traffic_state)
-    elif key_event.keycode == KEY_4:
-        traffic_state = VehicleSpawner.FREE
-        spawner.set_traffic_state(traffic_state)
-    elif key_event.keycode == KEY_C:
+    if key_event.keycode == KEY_C:
         camera_rig.next_preset()
     elif key_event.keycode == KEY_R:
         camera_rig.reset_current_preset()
@@ -183,20 +170,21 @@ func _build_hud() -> void:
 func _update_hud() -> void:
     var state := traffic_light.state if traffic_light != null else "?"
     var seconds := int(ceil(traffic_light.remaining)) if traffic_light != null else 0
-    var bridge_status := "sin señal"
+    var queue: String = spawner.detected_queue if spawner != null else "?"
+    var bridge_status: String = "sin señal"
     if bridge != null:
-        var age := bridge.seconds_since_last_update()
+        var age: float = bridge.seconds_since_last_update()
         if age < 2.0:
             bridge_status = "OK"
         elif age < 10.0:
             bridge_status = "%.0fs sin dato" % age
     hud_label.text = (
         "Av. Colon / Rivera Indarte\n"
-        + "Trafico: " + traffic_state + "\n"
+        + "Cola detectada: " + queue + "\n"
         + "Semaforo: " + state + "  timer: " + str(seconds) + "s\n"
         + "Python: " + bridge_status + "\n"
         + "Camara: " + camera_rig.current_preset_name() + "\n"
-        + "1 baja | 2 media | 3 alta | 4 libre | C camara | R reset\n"
+        + "C camara | R reset\n"
         + "Arriba/abajo avanzar | Izq/der lateral | PgUp/PgDn altura | +/- zoom\n"
         + "W/S pitch | Q/E yaw | Z/X roll"
     )

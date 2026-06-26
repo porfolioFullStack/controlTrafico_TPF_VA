@@ -34,8 +34,11 @@ func _poll() -> void:
 	var f := FileAccess.open(_state_path, FileAccess.READ)
 	if f == null:
 		return
-	var text := f.get_as_text()
+	var text := f.get_as_text().strip_edges()
 	f.close()
+
+	if text.is_empty():
+		return
 
 	var data = JSON.parse_string(text)
 	if not data is Dictionary:
