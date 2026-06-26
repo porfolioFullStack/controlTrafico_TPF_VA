@@ -24,8 +24,8 @@ AppState="*res://scripts/app_state.gd"
 
 [display]
 
-window/size/viewport_width=480
-window/size/viewport_height=520
+window/size/viewport_width=1280
+window/size/viewport_height=720
 
 [rendering]
 

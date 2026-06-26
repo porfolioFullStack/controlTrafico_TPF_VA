@@ -16,17 +16,8 @@ var _lbl_cal: Label
 var _lbl_log: Label
 
 
-const WIN_W: int = 480
-const WIN_H: int = 520
-
 func _ready() -> void:
-    # Forzar tamaño y posición de ventana antes de construir UI
-    DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_RESIZE_DISABLED, true)
-    DisplayServer.window_set_size(Vector2i(WIN_W, WIN_H))
-    var scr := DisplayServer.screen_get_size()
-    DisplayServer.window_set_position((scr - Vector2i(WIN_W, WIN_H)) / 2)
     set_anchors_preset(Control.PRESET_FULL_RECT)
-
     _root    = ProjectSettings.globalize_path("res://")
     _python  = _root + ".venv/Scripts/python.exe"
     _pythonw = _root + ".venv/Scripts/pythonw.exe"
@@ -144,17 +135,34 @@ func _log(msg: String) -> void:
 # ── UI procedural ────────────────────────────────────────────────────────────
 
 func _build_ui() -> void:
-    # El panel ocupa toda la ventana
+    # Fondo oscuro que llena toda la ventana
+    var bg := ColorRect.new()
+    bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+    bg.color = Color(0.07, 0.09, 0.11)
+    add_child(bg)
+
+    # CenterContainer para centrar el panel
+    var center := CenterContainer.new()
+    center.set_anchors_preset(Control.PRESET_FULL_RECT)
+    add_child(center)
+
+    # Panel de tamaño fijo
     var panel := PanelContainer.new()
-    panel.set_anchors_preset(Control.PRESET_FULL_RECT)
+    panel.custom_minimum_size = Vector2(440, 480)
     var panel_style := StyleBoxFlat.new()
     panel_style.bg_color = Color(0.11, 0.14, 0.18)
+    panel_style.border_width_left   = 1
+    panel_style.border_width_right  = 1
+    panel_style.border_width_top    = 1
+    panel_style.border_width_bottom = 1
+    panel_style.border_color = Color(0.22, 0.28, 0.36)
+    panel_style.set_corner_radius_all(8)
     panel_style.content_margin_left   = 48
     panel_style.content_margin_right  = 48
     panel_style.content_margin_top    = 40
     panel_style.content_margin_bottom = 40
     panel.add_theme_stylebox_override("panel", panel_style)
-    add_child(panel)
+    center.add_child(panel)
 
     var vbox := VBoxContainer.new()
     vbox.add_theme_constant_override("separation", 16)
