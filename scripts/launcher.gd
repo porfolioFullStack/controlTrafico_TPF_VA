@@ -16,8 +16,17 @@ var _lbl_cal: Label
 var _lbl_log: Label
 
 
+const WIN_W: int = 480
+const WIN_H: int = 520
+
 func _ready() -> void:
+    # Forzar tamaño y posición de ventana antes de construir UI
+    DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_RESIZE_DISABLED, true)
+    DisplayServer.window_set_size(Vector2i(WIN_W, WIN_H))
+    var scr := DisplayServer.screen_get_size()
+    DisplayServer.window_set_position((scr - Vector2i(WIN_W, WIN_H)) / 2)
     set_anchors_preset(Control.PRESET_FULL_RECT)
+
     _root    = ProjectSettings.globalize_path("res://")
     _python  = _root + ".venv/Scripts/python.exe"
     _pythonw = _root + ".venv/Scripts/pythonw.exe"

@@ -13,8 +13,10 @@ var hud_label: Label
 
 
 func _ready() -> void:
-    DisplayServer.window_set_size(Vector2i(1280, 720))
     DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_RESIZE_DISABLED, false)
+    DisplayServer.window_set_size(Vector2i(1280, 720))
+    var scr := DisplayServer.screen_get_size()
+    DisplayServer.window_set_position((scr - Vector2i(1280, 720)) / 2)
     randomize()
     _build_lighting()
     _build_city()
