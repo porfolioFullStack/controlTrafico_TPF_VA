@@ -127,7 +127,16 @@ def warp_panel(frame: np.ndarray, pts: list) -> np.ndarray:
 
 
 def main() -> None:
-    cam_index = int(sys.argv[1]) if len(sys.argv) > 1 else 0
+    # Prioridad: argumento CLI > cam_index guardado en roi.json > 0
+    if len(sys.argv) > 1:
+        cam_index = int(sys.argv[1])
+    elif ROI_FILE.exists():
+        try:
+            cam_index = json.loads(ROI_FILE.read_text()).get("cam_index", 0)
+        except Exception:
+            cam_index = 0
+    else:
+        cam_index = 0
     cap = cv2.VideoCapture(cam_index, cv2.CAP_DSHOW)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH,  1920)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
