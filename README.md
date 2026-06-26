@@ -1,5 +1,11 @@
 # Simulador Av. Colón / Rivera Indarte
 
+![Godot 4.6](https://img.shields.io/badge/Godot-4.6-478CBF?logo=godotengine&logoColor=white)
+![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
+![OpenCV](https://img.shields.io/badge/OpenCV-4.x-5C3EE8?logo=opencv&logoColor=white)
+![Plataforma](https://img.shields.io/badge/Plataforma-Windows-0078D6?logo=windows&logoColor=white)
+![Estado](https://img.shields.io/badge/Estado-En%20desarrollo-yellow)
+
 Simulador 3D de tráfico en Godot 4.6 para el trabajo final de Visión Artificial (UTN).
 El semáforo de la simulación responde al estado del semáforo físico detectado en tiempo
 real por una cámara USB mediante OpenCV.
@@ -80,19 +86,27 @@ en cada cambio de estado o valor.
 ```
 prueba_godot/
 ├── config/
-│   ├── .gitkeep           # directorio trackeado; los JSON se generan en runtime
-│   ├── roi.json           # ← generado por calibración (ignorado por git)
-│   └── traffic_state.json # ← generado por el detector (ignorado por git)
+│   ├── .gitkeep            # directorio trackeado; los JSON se generan en runtime
+│   ├── roi.json            # ← generado por calibración (ignorado por git)
+│   └── traffic_state.json  # ← generado por el detector (ignorado por git)
 ├── docs/
-│   └── pipeline.md        # documentación técnica del pipeline
+│   └── pipeline.md         # documentación técnica del pipeline
 ├── scenes/
-│   └── main.tscn
-├── scripts/               # GDScript Godot
-├── scriptsPy/             # Python / OpenCV
-│   ├── camera_view.py     # visor simple de cámara
-│   ├── roi_selector.py    # calibración etapa 1
-│   ├── digit_calibrator.py# calibración etapa 2
-│   └── traffic_detector.py# detector principal
+│   ├── launcher.tscn       # pantalla inicial con botones de calibración/simulador
+│   └── main.tscn           # escena 3D del simulador
+├── scripts/                # GDScript Godot
+│   ├── app_state.gd        # singleton: PID del detector Python
+│   ├── launcher.gd         # lógica del dashboard inicial
+│   ├── simulation_controller.gd
+│   ├── vehicle_controller.gd
+│   ├── vehicle_spawner.gd
+│   ├── traffic_light_controller.gd
+│   ├── python_bridge.gd
+│   └── camera_rig.gd
+├── scriptsPy/              # Python / OpenCV
+│   ├── roi_selector.py     # calibración etapa 1 (polígono panel)
+│   ├── digit_calibrator.py # calibración etapa 2 (bboxes dígitos)
+│   └── traffic_detector.py # detector principal (escribe traffic_state.json)
 ├── requirements.txt
 └── project.godot
 ```
