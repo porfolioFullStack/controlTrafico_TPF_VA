@@ -31,16 +31,10 @@ func _ready() -> void:
 func _process(delta: float) -> void:
     var green: bool = traffic_light == null or traffic_light.is_vehicle_green()
 
-    # En rojo: parar en la línea si ya la alcanzamos
-    if not green and position.z >= STOP_Z:
-        stopped = true
-        return
-
-    # Gap parachoques-a-parachoques con el auto de adelante
     var gap: float = _leader_gap()
 
-    # En rojo: la línea de detención actúa como "auto virtual" al frente
-    if not green:
+    # En rojo: la línea actúa como auto virtual solo si el vehículo aún no la pasó
+    if not green and position.z < STOP_Z:
         var line_gap: float = (STOP_Z - CAR_LENGTH * 0.5) - (position.z + CAR_LENGTH * 0.5)
         gap = min(gap, line_gap)
 
