@@ -181,6 +181,16 @@ y **no se versionan** (están en `.gitignore`), por lo que cada PC tiene su prop
 
 ---
 
+## Documentación
+
+| Documento | Descripción |
+|-----------|-------------|
+| [Informe técnico del simulador](docs/informe_simulador_controlTrafico.md) | Informe académico completo: arquitectura, desarrollo, calibración, limitaciones y mejoras |
+| [Pipeline de visión artificial](docs/pipelineVA_fd51352.md) | Descripción técnica end-to-end del pipeline de detección al commit `fd51352` |
+| [Pipeline general](docs/pipeline.md) | Documentación técnica del pipeline |
+
+---
+
 ## Scope actual
 
 - Av. Colón como avenida urbana de 4 carriles.
