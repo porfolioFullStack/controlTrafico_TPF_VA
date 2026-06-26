@@ -1,0 +1,18 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Godot cache
+.godot/
+*.uid
+
+# Calibración y runtime — específicos de cada instalación
+config/roi.json
+config/traffic_state.json
+config/traffic_state.tmp
+config/traffic_state.json.tmp
+
+# VSCode
+.vscode/
