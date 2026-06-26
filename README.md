@@ -5,10 +5,31 @@
 ![OpenCV](https://img.shields.io/badge/OpenCV-4.x-5C3EE8?logo=opencv&logoColor=white)
 ![Plataforma](https://img.shields.io/badge/Plataforma-Windows-0078D6?logo=windows&logoColor=white)
 ![Estado](https://img.shields.io/badge/Estado-En%20desarrollo-yellow)
+![Licencia](https://img.shields.io/badge/Licencia-Académica%20UTN-lightgrey)
 
 Simulador 3D de tráfico en Godot 4.6 para el trabajo final de Visión Artificial (UTN).
 El semáforo de la simulación responde al estado del semáforo físico detectado en tiempo
 real por una cámara USB mediante OpenCV.
+
+---
+
+## Trabajo Final — Visión Artificial
+
+| | |
+|---|---|
+| **Materia** | Introducción a la Visión Artificial |
+| **Docente** | Alexis Gonzales |
+| **Universidad** | UTN — Facultad Regional Córdoba |
+| **Período** | Junio — Julio 2026 |
+
+### Equipo
+
+| Alumno |
+|--------|
+| Casali, Emiliano |
+| Del Soto, Gustavo |
+| Ferrero, Facundo |
+| Vera, Gonzalo |
 
 ## Arquitectura
 
