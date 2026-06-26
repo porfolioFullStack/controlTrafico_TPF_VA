@@ -3,10 +3,12 @@ extends Node3D
 const TrafficLight := preload("res://scripts/traffic_light_controller.gd")
 const VehicleSpawnerScript := preload("res://scripts/vehicle_spawner.gd")
 const CameraRigScript := preload("res://scripts/camera_rig.gd")
+const PythonBridgeScript := preload("res://scripts/python_bridge.gd")
 
 var traffic_light: TrafficLightController
 var spawner: VehicleSpawner
 var camera_rig: CameraRig
+var bridge: PythonBridge
 var hud_label: Label
 var traffic_state := VehicleSpawner.LOW
 
@@ -20,6 +22,7 @@ func _ready() -> void:
     _build_spawner()
     _build_camera()
     _build_hud()
+    _build_bridge()
 
 
 func _process(_delta: float) -> void:
@@ -150,6 +153,19 @@ func _build_camera() -> void:
     add_child(camera_rig)
 
 
+func _build_bridge() -> void:
+    bridge = PythonBridgeScript.new()
+    bridge.name = "PythonBridge"
+    add_child(bridge)
+    bridge.state_updated.connect(_on_python_state)
+
+
+func _on_python_state(state: String, remaining: float) -> void:
+    traffic_light.force_state(state)
+    if remaining >= 0.0:
+        traffic_light.remaining = remaining
+
+
 func _build_hud() -> void:
     var layer := CanvasLayer.new()
     layer.name = "HUD"
@@ -167,10 +183,18 @@ func _build_hud() -> void:
 func _update_hud() -> void:
     var state := traffic_light.state if traffic_light != null else "?"
     var seconds := int(ceil(traffic_light.remaining)) if traffic_light != null else 0
+    var bridge_status := "sin señal"
+    if bridge != null:
+        var age := bridge.seconds_since_last_update()
+        if age < 2.0:
+            bridge_status = "OK"
+        elif age < 10.0:
+            bridge_status = "%.0fs sin dato" % age
     hud_label.text = (
         "Av. Colon / Rivera Indarte\n"
         + "Trafico: " + traffic_state + "\n"
         + "Semaforo: " + state + "  timer: " + str(seconds) + "s\n"
+        + "Python: " + bridge_status + "\n"
         + "Camara: " + camera_rig.current_preset_name() + "\n"
         + "1 baja | 2 media | 3 alta | 4 libre | C camara | R reset\n"
         + "Arriba/abajo avanzar | Izq/der lateral | PgUp/PgDn altura | +/- zoom\n"
