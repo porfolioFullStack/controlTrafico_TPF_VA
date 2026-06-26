@@ -6,8 +6,9 @@ var speed: float = 8.0
 
 const STOP_Z: float    = -8.5   # línea de detención
 const END_Z: float     =  72.0  # sale de escena
-const DESIRED_GAP: float = 4.4  # distancia al auto de adelante
-const MIN_GAP: float     = 1.4  # brecha mínima antes de frenar a 0
+const CAR_LENGTH: float  = 3.2   # longitud del cuerpo del auto
+const DESIRED_GAP: float = 3.5   # gap parachoques-a-parachoques deseado
+const MIN_GAP: float     = 0.6   # gap mínimo (para-choques) antes de parar
 
 var traffic_light: TrafficLightController
 var fleet: Array        # referencia al array del spawner (para car-following)
@@ -29,16 +30,21 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
     var green: bool = traffic_light == null or traffic_light.is_vehicle_green()
-    var gap: float  = _leader_gap()
 
-    # Velocidad limitada por el vehículo de adelante
-    var v: float = speed * clamp((gap - MIN_GAP) / DESIRED_GAP, 0.0, 1.0)
-
-    # En rojo: frenar si pasamos la línea de detención
+    # En rojo: parar en la línea si ya la alcanzamos
     if not green and position.z >= STOP_Z:
         stopped = true
         return
 
+    # Gap parachoques-a-parachoques con el auto de adelante
+    var gap: float = _leader_gap()
+
+    # En rojo: la línea de detención actúa como "auto virtual" al frente
+    if not green:
+        var line_gap: float = (STOP_Z - CAR_LENGTH * 0.5) - (position.z + CAR_LENGTH * 0.5)
+        gap = min(gap, line_gap)
+
+    var v: float = speed * clamp((gap - MIN_GAP) / DESIRED_GAP, 0.0, 1.0)
     stopped = v < 0.3
     position.z += v * delta
 
@@ -56,7 +62,8 @@ func _leader_gap() -> float:
             continue  # carril distinto
         var dz: float = other.position.z - position.z
         if dz > 0.0 and dz < 60.0:
-            best = min(best, dz)
+            # Convertir de centro-a-centro a parachoques-a-parachoques
+            best = min(best, dz - CAR_LENGTH)
     return best
 
 
