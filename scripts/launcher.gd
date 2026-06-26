@@ -135,27 +135,17 @@ func _log(msg: String) -> void:
 # ── UI procedural ────────────────────────────────────────────────────────────
 
 func _build_ui() -> void:
-    var bg := ColorRect.new()
-    bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-    bg.color = Color(0.07, 0.09, 0.11)
-    add_child(bg)
-
-    # CenterContainer ocupa toda la pantalla y centra su hijo
-    var center := CenterContainer.new()
-    center.set_anchors_preset(Control.PRESET_FULL_RECT)
-    add_child(center)
-
+    # El panel ocupa toda la ventana
     var panel := PanelContainer.new()
-    panel.custom_minimum_size = Vector2(520, 0)
+    panel.set_anchors_preset(Control.PRESET_FULL_RECT)
     var panel_style := StyleBoxFlat.new()
     panel_style.bg_color = Color(0.11, 0.14, 0.18)
-    panel_style.set_corner_radius_all(10)
-    panel_style.content_margin_left   = 42
-    panel_style.content_margin_right  = 42
-    panel_style.content_margin_top    = 36
-    panel_style.content_margin_bottom = 36
+    panel_style.content_margin_left   = 48
+    panel_style.content_margin_right  = 48
+    panel_style.content_margin_top    = 40
+    panel_style.content_margin_bottom = 40
     panel.add_theme_stylebox_override("panel", panel_style)
-    center.add_child(panel)
+    add_child(panel)
 
     var vbox := VBoxContainer.new()
     vbox.add_theme_constant_override("separation", 16)
